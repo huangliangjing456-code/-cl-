@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>重新选择</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #e9e9ec; }
+    body { display: grid; place-items: center; padding: 0; font-family: Arial, "Microsoft YaHei", sans-serif; }
+    .artboard {
+      position: relative;
+      width: min(375px, 100vw);
+      aspect-ratio: 375 / 812;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 18px 50px rgba(0,0,0,.18);
+    }
+    .screen { display: block; width: 100%; height: 100%; object-fit: fill; }
+    .options-mask {
+      position: absolute; z-index: 3;
+      left: 0; top: 64.8%; width: 100%; height: 17.8%;
+      background: #fff;
+      pointer-events: none;
+    }
+    .choice-asset {
+      position: absolute; z-index: 4;
+      width: 28%; height: auto;
+      pointer-events: none;
+    }
+    .choice-asset--unselected { top: 66.87%; display: block; }
+    .choice-asset--selected { top: 65.64%; display: none; }
+    .choice-asset--left { left: 5%; }
+    .choice-asset--center { left: 36%; }
+    .choice-asset--right { left: 67%; }
+    .artboard[data-choice="left"] .left-unselected,
+    .artboard[data-choice="center"] .center-unselected,
+    .artboard[data-choice="right"] .right-unselected { display: none; }
+    .artboard[data-choice="left"] .left-selected,
+    .artboard[data-choice="center"] .center-selected,
+    .artboard[data-choice="right"] .right-selected { display: block; }
+    .choice, .reroll {
+      position: absolute; z-index: 10; padding: 0; border: 0;
+      background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .choice { top: 65.2%; width: 29%; height: 16.6%; border-radius: 18px; }
+    .choice-left { left: 4.5%; }
+    .choice-center { left: 35.5%; }
+    .choice-right { left: 66.5%; }
+    .reroll { left: 5.1%; top: 83.9%; width: 89.8%; height: 7.1%; border-radius: 18px; }
+    .choice:focus-visible, .reroll:focus-visible { outline: 3px solid #22c55e; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <main class="artboard" data-choice="right" aria-label="重新选择页面">
+    <img class="screen" src="images/Frame18.jpg" alt="再试试，还是换点别的">
+    <span class="options-mask"></span>
+    <img class="choice-asset choice-asset--unselected choice-asset--left left-unselected" src="svg/Left%20unselected.svg" alt="">
+    <img class="choice-asset choice-asset--selected choice-asset--left left-selected" src="svg/Group%2010.svg" alt="">
+    <img class="choice-asset choice-asset--unselected choice-asset--center center-unselected" src="svg/Center%20unselected.svg" alt="">
+    <img class="choice-asset choice-asset--selected choice-asset--center center-selected" src="svg/Center%20selected.svg" alt="">
+    <img class="choice-asset choice-asset--unselected choice-asset--right right-unselected" src="svg/Right%20unselected.svg" alt="">
+    <img class="choice-asset choice-asset--selected choice-asset--right right-selected" src="svg/Group%2010%20right.svg" alt="">
+    <button class="choice choice-left" type="button" data-value="left" aria-label="选择随便吃点" aria-pressed="false"></button>
+    <button class="choice choice-center" type="button" data-value="center" aria-label="选择正在纠结" aria-pressed="false"></button>
+    <button class="choice choice-right" type="button" data-value="right" aria-label="选择整点好的" aria-pressed="true"></button>
+    <button class="reroll" type="button" aria-label="重新选择"></button>
+  </main>
+  <script>
+    (() => {
+      const artboard = document.querySelector('.artboard');
+      const choices = [...document.querySelectorAll('.choice')];
+      const select = (value) => {
+        artboard.dataset.choice = value;
+        choices.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.value === value)));
+      };
+      choices.forEach((button) => button.addEventListener('click', () => select(button.dataset.value)));
+      document.querySelector('.reroll').addEventListener('click', () => {
+        window.location.href = 'Frame19.html';
+      });
+    })();
+  </script>
+</body>
+</html>
